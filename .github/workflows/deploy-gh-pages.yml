@@ -29,14 +29,9 @@ jobs:
       run: |
         git checkout --orphan gh-pages
 
-    - name: Remove all files from previous commits
+    - name: Add all files to gh-pages
       run: |
-        git rm -rf .
-
-    - name: Copy all files from master
-      run: |
-        cp -r ./* ./
-        git add .
+        git add --all
         git commit -m "Deploy to gh-pages"
 
     - name: Push to gh-pages branch
