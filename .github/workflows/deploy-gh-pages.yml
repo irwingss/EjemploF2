@@ -8,26 +8,39 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
 
-    - name: Set up Git for pushing
+    - name: Set up Git
       run: |
         git config --global user.name 'GitHub Actions'
         git config --global user.email 'actions@github.com'
         git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-    
-    - name: Checkout gh-pages branch
-      run: |
-        git fetch origin gh-pages:gh-pages
-        git checkout gh-pages
 
-    - name: Merge master into gh-pages
+    - name: Delete gh-pages branch from remote
       run: |
-        git merge master
+        git push origin --delete gh-pages || true
+
+    - name: Create new gh-pages branch
+      run: |
+        git checkout --orphan gh-pages
+
+    - name: Remove all files from previous commits
+      run: |
+        git rm -rf .
+
+    - name: Copy all files from master
+      run: |
+        cp -r ./* ./.github/workflows/.   # Copy all files, excluding the workflow itself
+        git add .
+        git commit -m "Deploy to gh-pages"
+
+    - name: Push to gh-pages branch
+      run: |
         git push origin gh-pages --force
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
