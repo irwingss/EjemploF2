@@ -21,7 +21,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Quarto 3
+## Quarto 4
 
 Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
 
