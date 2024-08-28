@@ -35,7 +35,7 @@ jobs:
 
     - name: Copy all files from master
       run: |
-        cp -r ./* ./.github/workflows/.   # Copy all files, excluding the workflow itself
+        cp -r ./* ./
         git add .
         git commit -m "Deploy to gh-pages"
 
